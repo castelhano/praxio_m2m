@@ -1,0 +1,11 @@
+{
+  "name": "praxio_m2m",
+  "version": "1.0.0",
+  "description": "Conversor de arquivos Globus/Escala para M2M",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rafael Gustavo Alves [castelhano.rafael@gmail.com]",
+  "license": "MIT"
+}
