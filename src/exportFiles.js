@@ -9,6 +9,7 @@ function exportFiles(linhas){
     let es_headers = 'Tabela;Horario;Veiculo\n';
     let nome_empresa = document.getElementById('id_empresa').value;
     let toleranciaPercentual = document.getElementById('id_tolerancia').value;
+    let tipo = document.getElementById('id_tipo').value;
     var zip = new JSZip();
     
     for (const [key, value] of Object.entries(linhas)) { // Percorre todas as linhas
@@ -34,10 +35,14 @@ function exportFiles(linhas){
                 pl_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
             }
         }
-        zip.file(`${key}_PL_IDA.csv`, pl_ida);
-        zip.file(`${key}_PL_VOLTA.csv`, pl_volta);
-        zip.file(`${key}_ESC_IDA.csv`, es_ida);
-        zip.file(`${key}_ESC_VOLTA.csv`, es_volta);
+        if(tipo == 'P' || tipo == 'PE'){
+            zip.file(`${key}_PL_IDA.csv`, pl_ida);
+            zip.file(`${key}_PL_VOLTA.csv`, pl_volta);
+        }
+        if(tipo == 'E' || tipo == 'PE'){
+            zip.file(`${key}_ESC_IDA.csv`, es_ida);
+            zip.file(`${key}_ESC_VOLTA.csv`, es_volta);
+        }
     }
     zip.generateAsync({type:"blob"}).then(function(content) {saveAs(content, "arquivos.zip");})
 }

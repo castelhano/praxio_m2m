@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./src/app.css">
     <title>Gerador de Arquivos M2M</title>
 
     <style>
@@ -27,6 +26,11 @@
             <select name="empresa" id="id_empresa" style="margin-top: 10px;">
                 <option value="Rápido Cuiabá">Rapido Cuiaba</option>
                 <option value="VPAR TRANSPORTES">Vpar Transportes</option>
+            </select>
+            <select name="tipo" id="id_tipo">
+                <option value="PE" selected>Planejamento e Escala</option>
+                <option value="P">Planejamento</option>
+                <option value="E">Escala</option>
             </select>
             <label for="id_tolerancia" style="margin-left: 20px; font-size: 14px;">Tolerancia</label>
             <input type="number" id="id_tolerancia" name="tolerancia" min="1" max="100" value="50" style="width: 60px;padding-left: 10px;"> (%) <br /><br />
@@ -62,7 +66,7 @@
     function linhaPreview(e){let n=linhas[e],s=n.length,l=document.getElementById("cnsl"),i=document.getElementById("btnGerarLinha");l.innerHTML="";for(let e=0;e<s;e++){let s=`<p>\n        ${n[e][4]}&emsp;\n        ${n[e][2]}&emsp;\n        ${n[e][10]}&emsp;\n        ${n[e][11].slice(0,-2)+":"+n[e][11].slice(-2)}&emsp;\n        ${n[e][12].slice(0,-2)+":"+n[e][12].slice(-2)}&emsp;\n        ${n[e][22]}&emsp;\n        ${n[e][23]}&emsp;\n        ${n[e][25]}&emsp;\n        </p>`;l.innerHTML+=s}i.innerHTML=`Gerar linha <b>${e}</b>`,i.dataset.linha=e,i.classList.remove("d-none")}
 
     // exportFiles
-    function gerarTodos(){exportFiles(linhas)}function gerarLinha(e){let a=linhas[e],n={};n[e]=a,exportFiles(n)}function exportFiles(e){let a="Tabela;Horario_Partida;Tolerancia_Atraso1;Tolerancia_Adiantamento1;Horario_Chegada;Tolerancia_Atraso2;Tolerancia_Adiantamento2;passagem1;permanencia1;passagem2;permanencia2;passagem3;permanencia3;passagem4;permanencia4;passagem5;permanencia5;passagem6;permanencia6;passagem7;permanencia7;passagem8;permanencia8;passagem9;permanencia9;passagem10;permanencia10;empresa\n",n=document.getElementById("id_empresa").value,i=document.getElementById("id_tolerancia").value;var s=new JSZip;for(const[c,r]of Object.entries(e)){let e="\ufeff",t=r.length,o=`${e}${a}`,p=`${e}${a}`,$=`${e}Tabela;Horario;Veiculo\n`,m=`${e}Tabela;Horario;Veiculo\n`,u=null,g=0;function l(e,a){return e[0]===a[0]?0:e[0]<a[0]?-1:1}r.sort(l);for(let e=0;e<t;e++){u!=r[e][22]&&(u=r[e][22],g++);let a=calculaTolerancia(r[e][11],r[e][12],i);"I"==r[e][10]?($+=`${g};${r[e][11].slice(0,-2)+":"+r[e][11].slice(-2)};${r[e][12].slice(0,-2)+":"+r[e][12].slice(-2)}\n`,o+=`${g};${r[e][11].slice(0,-2)+":"+r[e][11].slice(-2)};${a};${a};${r[e][12].slice(0,-2)+":"+r[e][12].slice(-2)};${a};${a};;;;;;;;;;;;;;;;;;;;;${n}\n`):"V"==r[e][10]&&(m+=`${g};${r[e][11].slice(0,-2)+":"+r[e][11].slice(-2)};${r[e][12].slice(0,-2)+":"+r[e][12].slice(-2)}\n`,p+=`${g};${r[e][11].slice(0,-2)+":"+r[e][11].slice(-2)};${a};${a};${r[e][12].slice(0,-2)+":"+r[e][12].slice(-2)};${a};${a};;;;;;;;;;;;;;;;;;;;;${n}\n`)}s.file(`${c}_PL_IDA.csv`,o),s.file(`${c}_PL_VOLTA.csv`,p),s.file(`${c}_ESC_IDA.csv`,$),s.file(`${c}_ESC_VOLTA.csv`,m)}s.generateAsync({type:"blob"}).then(function(e){saveAs(e,"arquivos.zip")})}function calculaTolerancia(e,a,n){let i=parseInt(e.slice(0,-2)),s=parseInt(e.slice(-2)),l=parseInt(a.slice(0,-2)),c=parseInt(a.slice(-2));return l<i&&(l+=24),Math.round(n/100*(60*l+c-(60*i+s)))}
+    function gerarTodos(){exportFiles(linhas)}function gerarLinha(e){let a=linhas[e],n={};n[e]=a,exportFiles(n)}function exportFiles(e){let a="Tabela;Horario_Partida;Tolerancia_Atraso1;Tolerancia_Adiantamento1;Horario_Chegada;Tolerancia_Atraso2;Tolerancia_Adiantamento2;passagem1;permanencia1;passagem2;permanencia2;passagem3;permanencia3;passagem4;permanencia4;passagem5;permanencia5;passagem6;permanencia6;passagem7;permanencia7;passagem8;permanencia8;passagem9;permanencia9;passagem10;permanencia10;empresa\n",n=document.getElementById("id_empresa").value,i=document.getElementById("id_tolerancia").value,s=document.getElementById("id_tipo").value;var l=new JSZip;for(const[r,t]of Object.entries(e)){let e="\ufeff",o=t.length,p=`${e}${a}`,$=`${e}${a}`,m=`${e}Tabela;Horario;Veiculo\n`,u=`${e}Tabela;Horario;Veiculo\n`,g=null,_=0;function c(e,a){return e[0]===a[0]?0:e[0]<a[0]?-1:1}t.sort(c);for(let e=0;e<o;e++){g!=t[e][22]&&(g=t[e][22],_++);let a=calculaTolerancia(t[e][11],t[e][12],i);"I"==t[e][10]?(m+=`${_};${t[e][11].slice(0,-2)+":"+t[e][11].slice(-2)};${t[e][12].slice(0,-2)+":"+t[e][12].slice(-2)}\n`,p+=`${_};${t[e][11].slice(0,-2)+":"+t[e][11].slice(-2)};${a};${a};${t[e][12].slice(0,-2)+":"+t[e][12].slice(-2)};${a};${a};;;;;;;;;;;;;;;;;;;;;${n}\n`):"V"==t[e][10]&&(u+=`${_};${t[e][11].slice(0,-2)+":"+t[e][11].slice(-2)};${t[e][12].slice(0,-2)+":"+t[e][12].slice(-2)}\n`,$+=`${_};${t[e][11].slice(0,-2)+":"+t[e][11].slice(-2)};${a};${a};${t[e][12].slice(0,-2)+":"+t[e][12].slice(-2)};${a};${a};;;;;;;;;;;;;;;;;;;;;${n}\n`)}"P"!=s&&"PE"!=s||(l.file(`${r}_PL_IDA.csv`,p),l.file(`${r}_PL_VOLTA.csv`,$)),"E"!=s&&"PE"!=s||(l.file(`${r}_ESC_IDA.csv`,m),l.file(`${r}_ESC_VOLTA.csv`,u))}l.generateAsync({type:"blob"}).then(function(e){saveAs(e,"arquivos.zip")})}function calculaTolerancia(e,a,n){let i=parseInt(e.slice(0,-2)),s=parseInt(e.slice(-2)),l=parseInt(a.slice(0,-2)),c=parseInt(a.slice(-2));return l<i&&(l+=24),Math.round(n/100*(60*l+c-(60*i+s)))}
     
     </script>
 </body>
