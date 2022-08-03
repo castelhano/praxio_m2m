@@ -8,21 +8,45 @@
     <title>Gerador de Arquivos M2M</title>
 </head>
 <body>
-    <h1>Gerador Arquivos M2M</h1>
-
-    <div class="callout callout-primary">Texto</div>
+    <div class="header">
+        <h3>Gerador Arquivos M2M</h3>
+    </div>
+    <div class="container">       
+        
+        <div class="callout callout-success">
+            <span style="float: right; font-weight: bold;cursor: pointer;" onclick="this.parentNode.remove()">Fechar</span>
+            Integração com o arquivo de exportação do Globus (Praxio):
+            <ul class="breadcrumb"><li class="breadcrumb-item">Escala</li><li class="breadcrumb-item">Utilitários</li><li class="breadcrumb-item">Integrações</li><li class="breadcrumb-item fw-bold text-primary" aria-current="page">Exporta escala (Goolsystem TXT) </li></ul>
+        </div>
+        <div class="form">
+            <input type="file" id="id_file" name="file" accept=".txt" oninput="processFile()"><br />
+            <select name="empresa" id="id_empresa" style="margin-top: 10px;">
+                <option value="Rápido Cuiabá">Rapido Cuiaba</option>
+                <option value="VPAR TRANSPORTES">Vpar Transportes</option>
+            </select>
+            <label for="id_tolerancia" style="margin-left: 20px; font-size: 14px;">Tolerancia</label>
+            <input type="number" id="id_tolerancia" name="tolerancia" min="1" max="100" value="50" style="width: 60px;padding-left: 10px;"> (%) <br /><br />
+            <span style="margin-right: 20px; font-size: 12px;">Version: <b>1.0.12</b></span><span style="font-size: 12px;">Author: <b>Rafael Gustavo Alves</b> &nbsp;&nbsp; (castelhano.rafael@gmail.com)</span>
+        </div>
+        <div class="row mt-1">
+            <div>
+                <ul id="linhas_container"></ul>
+            </div>
+            <div class="console">
+                <button id="btnGerarTodos" class="btn btn-primary d-none" onclick="gerarTodos()" style="margin-bottom: 5px;">Gerar todos</button>
+                <button id="btnGerarLinha" data-linha="" class="btn btn-primary d-none" onclick="gerarLinha(this.dataset.linha)" style="margin-bottom: 5px;"></button>
+                <div id="cnsl">Importe um arquivo para começar...</div>
+            </div>
+        </div>
+        
+    </div>
     
-    <input type="file" id="id_file" name="file" accept=".txt">
-
     
     <script src="./src/jszip.min.js"></script>
     <script src="./src/filesaver.js"></script>
-    <script>
-        // var zip = new JSZip();
-        // zip.file("Hello.txt", "Hello World\n");
-        // zip.generateAsync({type:"blob"}).then(function(content) {saveAs(content, "example.zip");})
-
-
-    </script>
+    <script src="./src/extras.js"></script>
+    <script src="./src/processFile.js"></script>
+    <script src="./src/linhaPreview.js"></script>
+    <script src="./src/exportFiles.js"></script>
 </body>
 </html>
