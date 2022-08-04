@@ -1,6 +1,6 @@
 {
   "name": "praxio_m2m",
-  "version": "1.0.0",
+  "version": "1.0.14",
   "description": "Conversor de arquivos Globus/Escala para M2M",
   "main": "index.js",
   "scripts": {

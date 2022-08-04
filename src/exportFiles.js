@@ -6,7 +6,7 @@ function gerarLinha(cod){let viag = linhas[cod];let linha = {};linha[cod] = viag
 function exportFiles(linhas){
     
     let pl_headers = 'Tabela;Horario_Partida;Tolerancia_Atraso1;Tolerancia_Adiantamento1;Horario_Chegada;Tolerancia_Atraso2;Tolerancia_Adiantamento2;passagem1;permanencia1;passagem2;permanencia2;passagem3;permanencia3;passagem4;permanencia4;passagem5;permanencia5;passagem6;permanencia6;passagem7;permanencia7;passagem8;permanencia8;passagem9;permanencia9;passagem10;permanencia10;empresa\n';
-    let es_headers = 'Tabela;Horario;Veiculo\n';
+    let es_headers = 'Tabela;Horario Partida;Veiculo\n';
     let nome_empresa = document.getElementById('id_empresa').value;
     let toleranciaPercentual = document.getElementById('id_tolerancia').value;
     let tipo = document.getElementById('id_tipo').value;
@@ -27,11 +27,11 @@ function exportFiles(linhas){
             
             let tolerancia = calculaTolerancia(value[i][11], value[i][12], toleranciaPercentual); // Calcula a tolerancia de atraso e adiantamento (ciclo * percentual)
             if(value[i][10] == 'I'){ // Caso viagem de ida, adiciona viagem e escala nas respectivas strings [pl_ida, es_ida]
-                es_ida += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${value[i][22]}\n`;
+                es_ida += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22])}\n`;
                 pl_ida += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
             }
             else if(value[i][10] == 'V'){ // Caso viagem de volta, adiciona viagem e escala nas respectivas strings [pl_volta, es_volta]
-                es_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${value[i][22]}\n`;
+                es_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22])}\n`;
                 pl_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
             }
         }
