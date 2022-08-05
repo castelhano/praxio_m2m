@@ -11,29 +11,28 @@ function exportFiles(linhas){
     let toleranciaPercentual = document.getElementById('id_tolerancia').value;
     let tipo = document.getElementById('id_tipo').value;
     var zip = new JSZip();
+    let errors = [];
+    let warnings = [];
     
     for (const [key, value] of Object.entries(linhas)) { // Percorre todas as linhas
         let universalBOM = "\uFEFF";
         let viagens_linha = value.length;
         let pl_ida = `${universalBOM}${pl_headers}`, pl_volta = `${universalBOM}${pl_headers}`, es_ida = `${universalBOM}${es_headers}`, es_volta = `${universalBOM}${es_headers}`;
-        let carro = null;
-        let carroSeq = 0;
-        
-        function sortFunction(a, b){if (a[0] === b[0]) {return 0;}else {return (a[0] < b[0]) ? -1 : 1;}}
-        value.sort(sortFunction); // Classifica as viagens da linha por carro, para adequar agrupamento das viagens
         
         for(let i = 0; i < viagens_linha; i++){ // Percorre as viagens da linha
-            if(carro != value[i][22]){carro = value[i][22];carroSeq++;} // Ajusta sequencia do carro no planejamento
+            let tab = parseInt(value[i][4]);
+            if(tab == NaN || tab == '' || !tab){errors.push(`ERRO: Tab ${value[i][4]} tem formato invalido ${value[i][0]} ${value[i][2]}\n`)}
             
             let tolerancia = calculaTolerancia(value[i][11], value[i][12], toleranciaPercentual); // Calcula a tolerancia de atraso e adiantamento (ciclo * percentual)
             if(value[i][10] == 'I'){ // Caso viagem de ida, adiciona viagem e escala nas respectivas strings [pl_ida, es_ida]
-                es_ida += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22])}\n`;
-                pl_ida += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
+                es_ida += `${tab};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22]) || ''}\n`;
+                pl_ida += `${tab};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
             }
             else if(value[i][10] == 'V'){ // Caso viagem de volta, adiciona viagem e escala nas respectivas strings [pl_volta, es_volta]
-                es_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22])}\n`;
-                pl_volta += `${carroSeq};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
+                es_volta += `${tab};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${parseInt(value[i][22]) || ''}\n`;
+                pl_volta += `${tab};${value[i][11].slice(0, -2) + ":" + value[i][11].slice(-2)};${tolerancia};${tolerancia};${value[i][12].slice(0, -2) + ":" + value[i][12].slice(-2)};${tolerancia};${tolerancia};;;;;;;;;;;;;;;;;;;;;${nome_empresa}\n`;
             }
+            if(!parseInt(value[i][22])){warnings.push(`ATENCAO: Tab ${value[i][4]} linha ${value[i][0]} sem veiculo escalado`)}
         }
         if(tipo == 'P' || tipo == 'PE'){
             zip.file(`${key}_PL_IDA.csv`, pl_ida);
@@ -44,6 +43,12 @@ function exportFiles(linhas){
             zip.file(`${key}_ESC_VOLTA.csv`, es_volta);
         }
     }
+    let errorsUnq = [...new Set(errors)]; // Remove duplicatas do array de erros
+    let warningsUnq = [...new Set(warnings)]; // Remove duplicatas do array de alertas
+    let cnsl = document.getElementById('cnsl');
+    cnsl.innerHTML = 'Rotina de exportação concluida....<br />--<br />';
+    for(const value of errorsUnq){cnsl.innerHTML += value + '<br />'}
+    for(const value of warningsUnq){cnsl.innerHTML += value + '<br />'}
     zip.generateAsync({type:"blob"}).then(function(content) {saveAs(content, "arquivos.zip");})
 }
 

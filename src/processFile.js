@@ -6,9 +6,10 @@ function processFile(){
     let linhas_container = document.getElementById('linhas_container');
     cnsl.innerHTML = ''; // Limpa o console
     linhas_container.innerHTML = ''; // Limpa as linhas se carregadas previamente
+    let prefixo = null;
     
     var fr = new FileReader();
-    
+
     // Method chamado apos fazer leitura do arquivo
     fr.onload = function(){
         cnsl.innerHTML = 'Aguarde, processando arquivo...';
@@ -24,7 +25,8 @@ function processFile(){
                 error = true;
                 cnsl.innerHTML = 'Arquivo em formato inválido....';
             }
-            else{
+            else{ // Se arquivo valido...
+                prefixo = rows[0].split(';')[22];
                 for(let i = 0; i < file_size; i++){ // Percorre todas as linhas, populando o dicionario linhas com as respectivas viagens
                     let row = rows[i].split(';');
                     if(row[0] == "" || row[0] == "\n" || row[0] == "\r" ){} // Descarta elemetos vazios
@@ -48,6 +50,13 @@ function processFile(){
                         }
                     }
                 }
+                // Tenta alterar a empresa marcada no select baseado digito inicial do prefixo (primeira linha do arquivo)
+                // 1 = Vpar 2 = Rapido
+                try{
+                    let initial = String(parseInt(prefixo))[0];
+                    if(initial == 1){document.getElementById('id_empresa').value = 'VPAR TRANSPORTES'}
+                    else if(initial == 2){document.getElementById('id_empresa').value = 'Rápido Cuiabá'}
+                }catch(error){console.log(error);} 
             }
         }
         catch(error){console.log(error);} 
