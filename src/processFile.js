@@ -50,12 +50,10 @@ function processFile(){
                         }
                     }
                 }
-                // Tenta alterar a empresa marcada no select baseado digito inicial do prefixo (primeira linha do arquivo)
-                // 1 = Vpar 2 = Rapido
+                // ANALISA DIGITO INICIAL DO PREFIXO (LINHA ID 0), SE EXISTIR CORRESPONDENTE NO DICIONARIO company, AJUSTA SELECT PARA A RESPECTIVA EMPRESA
                 try{
                     let initial = String(parseInt(prefixo))[0];
-                    if(initial == 1){document.getElementById('id_empresa').value = 'VPAR TRANSPORTES'}
-                    else if(initial == 2){document.getElementById('id_empresa').value = 'Rápido Cuiabá'}
+                    document.getElementById('id_empresa').value = company[initial];
                 }catch(error){console.log(error);} 
             }
         }

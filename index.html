@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/app.css">
     <title>Gerador de Arquivos M2M</title>
+
+    <script>
+        // DICIONARIO company ARMAZENA AS EMPRESAS A SEREM POPULADAS DO SELECT
+        // OPCIONAL: USE COMO key O DIGITO INICIAL DOS PREFIXOS DA REFERIDA EMPRESA, AO CARREGAR O ARQUIVO
+        // SE EXISTIR key CORRESPONDENTE SELECIONA EMPRESA DE FORMA AUTOMATICA 
+        var company = {
+            1: 'VPAR TRANSPORTES',
+            2: 'Rápido Cuiabá'
+        } 
+    </script>
 </head>
 <body>
     <div class="header">
@@ -21,10 +31,7 @@
         </div>
         <div class="form">
             <input type="file" id="id_file" name="file" accept=".txt" oninput="processFile()"><br />
-            <select name="empresa" id="id_empresa" style="margin-top: 10px;">
-                <option value="Rápido Cuiabá">Rapido Cuiaba</option>
-                <option value="VPAR TRANSPORTES">Vpar Transportes</option>
-            </select>
+            <select name="empresa" id="id_empresa" style="margin-top: 10px;"></select>
             <select name="tipo" id="id_tipo">
                 <option value="PE" selected>Planejamento e Escala</option>
                 <option value="P">Planejamento</option>
@@ -46,7 +53,10 @@
         </div>
         
     </div>
-    
+
+    <script>
+        for(key in company){document.getElementById('id_empresa').innerHTML += `<option value="${company[key]}">${company[key]}</option>`;} // Popula select de empresas
+    </script>
     
     <script src="./src/jszip.min.js"></script>
     <script src="./src/filesaver.js"></script>

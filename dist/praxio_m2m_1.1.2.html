@@ -8,6 +8,15 @@
     <style>
         body{margin:0;font-family:sans-serif}h1,h2,h3,p{margin:0}.header{background-color:darkslategray;line-height:2.5;color:#f1f1f1;margin-bottom:10px;padding-left:10px}.container{padding:10px}.callout{padding:10px 10px 10px 15px;border:1px solid gray;border-left:4px solid;border-radius:5px;margin-bottom:10px;font-size:15px}.callout-success{border-left:5px solid darkslategray}.mt-1{margin-top:10px}.mt-2{margin-top:20px}.d-none{display:none}.form{padding:10px;border-radius:5px;background-color:antiquewhite}#linhas_container{list-style:none;padding:0;margin-top:0;margin-right:10px}#linhas_container li{min-width:90px;line-height:1.8;border:1px solid gray;border-top:0;text-align:center}#linhas_container li:first-child{border-top:1px solid gray;border-radius:3px 3px 0 0}#linhas_container li:last-child{border-radius:0 0 3px 3px}#linhas_container li:hover{background-color:antiquewhite;cursor:pointer}.row{display:flex}.main-container{flex-grow:3;font-family:monospace;padding:10px;border:1px solid gray;border-radius:5px}.console{flex-grow:1;font-family:monospace;font-size:16px;padding:5px}.console>div{background-color:#3c3c3c;border-radius:3px;padding:8px 10px;color:#f1f1f1;min-height:150px}.btn{padding:5px 10px;cursor:pointer}.btn-primary{background-color:cadetblue;color:#f1f1f1;border:0;border-radius:5px}.btn-primary:hover{background-color:darkcyan}.breadcrumb{padding:0;margin:0;margin-top:5px;list-style:none}.breadcrumb-item{display:inline;font-weight:bold}.breadcrumb-item:last-child{font-weight:bold;color:darkred}.breadcrumb li+li:before{padding:8px;color:black;content:"/\00a0"}
     </style>
+    <script>
+        // DICIONARIO company ARMAZENA AS EMPRESAS A SEREM POPULADAS DO SELECT
+        // OPCIONAL: USE COMO key O DIGITO INICIAL DOS PREFIXOS DA REFERIDA EMPRESA, AO CARREGAR O ARQUIVO
+        // SE EXISTIR key CORRESPONDENTE SELECIONA EMPRESA DE FORMA AUTOMATICA 
+        var company = {
+            1: 'VPAR TRANSPORTES',
+            2: 'Rápido Cuiabá'
+        } 
+    </script>
 </head>
 <body>
     <div class="header">
@@ -23,10 +32,7 @@
         </div>
         <div class="form">
             <input type="file" id="id_file" name="file" accept=".txt" oninput="processFile()"><br />
-            <select name="empresa" id="id_empresa" style="margin-top: 10px;">
-                <option value="Rápido Cuiabá">Rapido Cuiaba</option>
-                <option value="VPAR TRANSPORTES">Vpar Transportes</option>
-            </select>
+            <select name="empresa" id="id_empresa" style="margin-top: 10px;"></select>
             <select name="tipo" id="id_tipo">
                 <option value="PE" selected>Planejamento e Escala</option>
                 <option value="P">Planejamento</option>
@@ -50,6 +56,8 @@
     </div>
 
     <script>
+    for(key in company){document.getElementById('id_empresa').innerHTML += `<option value="${company[key]}">${company[key]}</option>`;} // Popula select de empresas
+
     /*!
     JSZip v3.10.0 - A JavaScript class for generating and reading zip files
     <http://stuartk.com/jszip>
@@ -80,7 +88,7 @@
 
     
     // process file
-    var linhas={};function processFile(){linhas={};let e=document.getElementById("id_file").files,n=document.getElementById("cnsl"),l=document.getElementById("linhas_container");n.innerHTML="",l.innerHTML="";let t=null;var i=new FileReader;i.onload=function(){n.innerHTML="Aguarde, processando arquivo...";let e=i.result;var o=0,r=0,a=!1;try{var s=e.split("\n");o=s.length;let i=s[0].split(";").length||null;if(o<1||i<27||i>29)a=!0,n.innerHTML="Arquivo em formato inválido....";else{t=s[0].split(";")[22];for(let e=0;e<o;e++){let n=s[e].split(";");if(""==n[0]||"\n"==n[0]||"\r"==n[0]);else if(void 0!==linhas[n[0]])"1"==n[9]&&(n[12]=timeAdd(n[12],0,-1),linhas[n[0]].push(n));else if("1"==n[9]){n[12]=timeAdd(n[12],0,-1),linhas[n[0]]=[n],r++;let e=`onclick="linhaPreview(${n[0]})"`,t=`<li data-value="${n[0]}" ${e}>${n[0]}</li>`;l.innerHTML+=t}}try{let e=String(parseInt(t))[0];1==e?document.getElementById("id_empresa").value="VPAR TRANSPORTES":2==e&&(document.getElementById("id_empresa").value="Rápido Cuiabá")}catch(a){console.log(a)}}}catch(a){console.log(a)}if(!a){n.innerHTML=`<b>Análise</b> concluida, total de <b>${floatFormat(o)}</b> registros encontrados em <b>${r}</b> linhas<br />--<br />`,document.getElementById("btnGerarTodos").classList.remove("d-none");let e=`<button class="btn btn-primary" ${'onclick="gerarTodos()"'}>Gerar todos</button>`;n.innerHTML+=`<br />Click em ${e} ou selecione uma linha e depois <b>Gerar linha</b>`}},i.readAsText(e[0])}
+    var linhas={};function processFile(){linhas={};let e=document.getElementById("id_file").files,n=document.getElementById("cnsl"),l=document.getElementById("linhas_container");n.innerHTML="",l.innerHTML="";let t=null;var i=new FileReader;i.onload=function(){n.innerHTML="Aguarde, processando arquivo...";let e=i.result;var o=0,r=0,a=!1;try{var s=e.split("\n");o=s.length;let i=s[0].split(";").length||null;if(o<1||i<27||i>29)a=!0,n.innerHTML="Arquivo em formato inválido....";else{t=s[0].split(";")[22];for(let e=0;e<o;e++){let n=s[e].split(";");if(""==n[0]||"\n"==n[0]||"\r"==n[0]);else if(void 0!==linhas[n[0]])"1"==n[9]&&(n[12]=timeAdd(n[12],0,-1),linhas[n[0]].push(n));else if("1"==n[9]){n[12]=timeAdd(n[12],0,-1),linhas[n[0]]=[n],r++;let e=`onclick="linhaPreview(${n[0]})"`,t=`<li data-value="${n[0]}" ${e}>${n[0]}</li>`;l.innerHTML+=t}}try{let e=String(parseInt(t))[0];document.getElementById("id_empresa").value=company[e]}catch(a){console.log(a)}}}catch(a){console.log(a)}if(!a){n.innerHTML=`<b>Análise</b> concluida, total de <b>${floatFormat(o)}</b> registros encontrados em <b>${r}</b> linhas<br />--<br />`,document.getElementById("btnGerarTodos").classList.remove("d-none");let e=`<button class="btn btn-primary" ${'onclick="gerarTodos()"'}>Gerar todos</button>`;n.innerHTML+=`<br />Click em ${e} ou selecione uma linha e depois <b>Gerar linha</b>`}},i.readAsText(e[0])}
 
 
 
