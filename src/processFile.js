@@ -30,19 +30,19 @@ function processFile(){
                 for(let i = 0; i < file_size; i++){ // Percorre todas as linhas, populando o dicionario linhas com as respectivas viagens
                     let row = rows[i].split(';');
                     if(row[0] == "" || row[0] == "\n" || row[0] == "\r" ){} // Descarta elemetos vazios
-                    else if(linhas[row[0]] !== undefined){ // Se linha ja existe no dicionario de linhas, faz push do row
+                    else if(linhas[`${row[0]}`] !== undefined){ // Se linha ja existe no dicionario de linhas, faz push do row
                         if(row[9] == '1'){
                             // Posicao 9 do array define 1 para viagens produtivas e 0 para improdutivas, somente sera carregado viagens produtivas
                             row[12] = timeAdd(row[12],0,-1) // Horario de termino da viagem nao pode ser igual ao horario de inicio (padrao do globus), eh reduzido 1 minuto no final da viagem
-                            linhas[row[0]].push(row);
+                            linhas[`${row[0]}`].push(row);
                         }
                     }
                     else{ // Caso linha ainda nao esteja cadastrada no dicionario de linhas, cria primeiro registro
                         if(row[9] == '1'){
                             row[12] = timeAdd(row[12],0,-1) // Horario de termino da viagem nao pode ser igual ao horario de inicio (padrao do globus), eh reduzido 1 minuto no final da viagem
-                            linhas[row[0]] = [row];
+                            linhas[`${row[0]}`] = [row];
                             linhas_size++;
-                            let item_onclick = `onclick="linhaPreview(${row[0]})"`
+                            let item_onclick = `onclick="linhaPreview('${row[0]}')"`
                             let list_item = `<li data-value="${row[0]}" ${item_onclick}>${row[0]}</li>`;
                             linhas_container.innerHTML += list_item;
                         }
