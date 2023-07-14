@@ -33,7 +33,7 @@ function processFile(){
                     else if(linhas[`${row[0]}`] !== undefined){ // Se linha ja existe no dicionario de linhas, faz push do row
                         if(row[9] == '1'){
                             // Posicao 9 do array define 1 para viagens produtivas e 0 para improdutivas, somente sera carregado viagens produtivas
-                            row[12] = timeAdd(row[12],0,-1) // Horario de termino da viagem nao pode ser igual ao horario de inicio (padrao do globus), eh reduzido 1 minuto no final da viagem
+                            row[12] = row[12] == '0000' ? '2359' : timeAdd(row[12],0,-1); // Horario de termino da viagem nao pode ser igual ao horario de inicio (padrao do globus), eh reduzido 1 minuto no final da viagem
                             linhas[`${row[0]}`].push(row);
                         }
                     }
