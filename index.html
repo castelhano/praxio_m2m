@@ -6,16 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/app.css">
     <title>Gerador de Arquivos M2M</title>
-
-    <script>
-        // DICIONARIO company ARMAZENA AS EMPRESAS A SEREM POPULADAS DO SELECT
-        // OPCIONAL: USE COMO key O DIGITO INICIAL DOS PREFIXOS DA REFERIDA EMPRESA, AO CARREGAR O ARQUIVO
-        // SE EXISTIR key CORRESPONDENTE SELECIONA EMPRESA DE FORMA AUTOMATICA 
-        var company = {
-            1: 'VPAR TRANSPORTES',
-            2: 'Rápido Cuiabá'
-        } 
-    </script>
 </head>
 <body>
     <div class="header">
@@ -27,7 +17,9 @@
             <span style="float: right; font-weight: bold;cursor: pointer;" onclick="this.parentNode.remove()">Fechar</span>
             Integração com o arquivo de exportação do Globus (Praxio):
             <ul class="breadcrumb"><li class="breadcrumb-item">Escala</li><li class="breadcrumb-item">Utilitários</li><li class="breadcrumb-item">Integrações</li><li class="breadcrumb-item fw-bold text-primary" aria-current="page">Exporta escala (Goolsystem TXT) </li></ul>
-            Opção <b>Escala</b> e selecione o dia para exportar o arquivo (gerar um arquivo para cada dia de importação)
+            Opção <b>Escala</b> e selecione o dia para exportar o arquivo (gerar um arquivo para cada dia de importação)<br>
+            <hr>
+            * Altere o arquivo <b><i>empresa.js</i></b> (usando um editor de texto) para adicionar, remover ou modificar empresas no select
         </div>
         <div class="form">
             <input type="file" id="id_file" name="file" accept=".txt" oninput="processFile()"><br />
@@ -39,7 +31,7 @@
             </select>
             <label for="id_tolerancia" style="margin-left: 20px; font-size: 13px;">Tolerancia</label>
             <input type="number" id="id_tolerancia" name="tolerancia" min="1" max="100" value="50" style="width: 60px;padding-left: 10px;"> (%) <br /><br />
-            <span style="margin-right: 20px; font-size: 12px;">Version: <b>1.1.7</b></span>
+            <span style="margin-right: 20px; font-size: 12px;">Version: <b>1.1.8</b></span>
         </div>
         <div class="row mt-1">
             <div>
@@ -54,6 +46,7 @@
         
     </div>
 
+    <script src="./src/empresas.js"></script>
     <script>
         for(key in company){document.getElementById('id_empresa').innerHTML += `<option value="${company[key]}">${company[key]}</option>`;} // Popula select de empresas
     </script>

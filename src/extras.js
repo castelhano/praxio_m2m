@@ -9,4 +9,4 @@ function timeAdd(hhmm, hadd=0, madd=0){
     while(mm > 59){hh++;mm -= 60;}
     while(mm < 0){hh--;mm += 60;}
     return `${String(hh).padStart(2, '0')}${String(mm).padStart(2, '0')}`;    
-  }
+}
