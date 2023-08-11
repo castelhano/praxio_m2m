@@ -50,11 +50,15 @@ function processFile(){
                         }
                     }
                 }
-                // ANALISA DIGITO INICIAL DO PREFIXO (LINHA ID 0), SE EXISTIR CORRESPONDENTE NO DICIONARIO company, AJUSTA SELECT PARA A RESPECTIVA EMPRESA
-                try{
-                    let initial = String(parseInt(prefixo))[0];
-                    document.getElementById('id_empresa').value = company[initial];
-                }catch(error){console.log(error);} 
+                if(autoSelectCompany){ // Caso variavel autoSelectCompany (empresas.js) esteja setada para true, tenta selecionar empresa correspondente
+                    try{
+                        let initial = String(parseInt(prefixo))[0]; // Pega digito inicial do veiculo na primeira linha do arquivo
+                        if(initial in company){ // Se existir chave correspondente do dicionario company, seleciona empresa correspondente
+                            document.getElementById('id_empresa').value = company[initial];
+                        }
+                    }catch(error){console.log(error);}
+                    
+                }
             }
         }
         catch(error){console.log(error);} 

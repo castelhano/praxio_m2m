@@ -5,3 +5,5 @@ var company = {
     1: 'VPAR TRANSPORTES',
     2: 'Rápido Cuiabá',
 }
+
+var autoSelectCompany = true;
