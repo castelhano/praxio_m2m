@@ -6,4 +6,4 @@ var company = {
     2: 'Rápido Cuiabá',
 }
 
-var autoSelectCompany = true;
+var autoSelectCompany = true; // true ou false
